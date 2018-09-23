@@ -1,4 +1,4 @@
-package general;
+package unit.tests.general;
 
 import java.time.Instant;
 import java.util.Collection;
