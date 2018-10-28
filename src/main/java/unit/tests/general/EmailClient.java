@@ -11,11 +11,14 @@ public class EmailClient {
     private EmailServiceFacade emailService;
     private Collection<EmailAccount> accounts;
 
+    // TODO [mmcj]: setEmailService not implemented
+
     public EmailClient(Collection<EmailAccount> accounts){
         this.emailService = new EmailService();
         this.accounts = accounts;
     }
 
+    // TODO [mmcj]: There's no test to this method
     public boolean isValidPassword(EmailAccount account){
         EmailAccountBuilder emailAcc = new EmailAccountBuilder(account);
         if(account.getPassword().length() > 6 && !emailAcc.verifyPasswordExpiration()){
@@ -72,8 +75,9 @@ public class EmailClient {
         return validBccs;
     }
 
+    // TODO [mmcj]: There's no test to this method
     public boolean isValidEmail(Email email) {
-
+        // TODO [mmcj]: The use of CC and BCC should be optional
         boolean validCreationDate = isValidCreationDate(email);
         boolean validFrom = isValidFrom(email);
         boolean validToMail = isValidTo(email);
@@ -114,6 +118,7 @@ public class EmailClient {
     }
 
     public boolean createAccount(EmailAccountBuilder account){
+        // TODO [mmcj]: Return false when account has no user
         if (isValidAcc(this.isValidPassword(account.build()) && account.userAndDomainAvailability())) {
             try {
                 account.build().setLastPasswordUpdate(Instant.now());

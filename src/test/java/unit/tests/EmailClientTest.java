@@ -47,11 +47,14 @@ public class EmailClientTest {
 
     }
 
+    // TODO [mmcj]: sendEmail tests are tightly coupled to isValidEmail
+
     @Test
     public void sendEmailTest_True() {
         try{
             this.client.sendEmail(this.email, emailAccount);
         } catch (RuntimeException e) {
+            // TODO [mmcj]: Avoid assertions that always evolute to failure
            Assertions.assertTrue(false);
         }
     }
@@ -84,6 +87,7 @@ public class EmailClientTest {
         }
     }
 
+    // TODO [mmcj]: There's no valid asserts in this test
     @Test
     public void createAccTest_True() {
         try{
@@ -98,6 +102,7 @@ public class EmailClientTest {
         try{
             this.emailAccount.setDomain("!br.com");
             this.client.createAccount(emailAcc);
+            // TODO [mmcj]: Use assertThrows to test exceptions
             Assertions.assertTrue(false);
         } catch (UnsupportedOperationException e) {
             Assertions.assertTrue(true);
@@ -114,6 +119,8 @@ public class EmailClientTest {
             Assertions.assertTrue(true);
         }
     }
+
+    // TODO [mmcj]: emailList tests are tightly coupled to createAccount
 
     @Test
     public void createAccEmailListTest_True() {
