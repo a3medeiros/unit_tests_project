@@ -27,11 +27,16 @@ public class EmailClient {
     public boolean isValidAddress(String emailAddress) {
         String[] returnFromValidAdress = emailAddress.split("@");
 
-        EmailAccount emailAccountToValid = new EmailAccount(returnFromValidAdress[0], returnFromValidAdress[1], null, null);
-        EmailAccountBuilder emailAcc = new EmailAccountBuilder(emailAccountToValid);
-        if (isValidAcc(emailAcc.userAndDomainAvailability())) {
-            return true;
+        try {
+            EmailAccount emailAccountToValid = new EmailAccount(returnFromValidAdress[0], returnFromValidAdress[1], null, null);
+            EmailAccountBuilder emailAcc = new EmailAccountBuilder(emailAccountToValid);
+            if (isValidAcc(emailAcc.userAndDomainAvailability())) {
+                return true;
+            }
+        } catch (Exception e) {
+            return false;
         }
+
         return false;
     }
 
@@ -114,6 +119,9 @@ public class EmailClient {
     }
 
     public boolean createAccount(EmailAccountBuilder account){
+        if (account.build().getUser().isEmpty()) {
+            return false;
+        }
         if (isValidAcc(this.isValidPassword(account.build()) && account.userAndDomainAvailability())) {
             try {
                 account.build().setLastPasswordUpdate(Instant.now());
@@ -132,5 +140,17 @@ public class EmailClient {
 
     public void setAccounts(Collection<EmailAccount> accounts) {
         this.accounts = accounts;
+    }
+
+    public EmailServiceFacade getEmailService() {
+        return emailService;
+    }
+
+    public void setEmailService(EmailServiceFacade emailService) {
+        this.emailService = emailService;
+    }
+
+    public Collection<EmailAccount> getAccounts() {
+        return accounts;
     }
 }

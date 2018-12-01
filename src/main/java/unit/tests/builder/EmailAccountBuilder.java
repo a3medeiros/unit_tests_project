@@ -1,6 +1,7 @@
 package unit.tests.builder;
 
 import unit.tests.general.EmailAccount;
+import unit.tests.util.Util;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
@@ -20,14 +21,12 @@ public class EmailAccountBuilder {
     }
 
     public boolean verifyPasswordExpiration(){
-        Instant aux;
-        Instant now = Instant.now();
-        aux = now.minus(91, ChronoUnit.DAYS);
-
-        if (aux.isAfter(this.emailAccount.getLastPasswordUpdate())||aux.equals(this.emailAccount.getLastPasswordUpdate()))
+        if (Util.getNowToValidadePassword().isAfter(this.emailAccount.getLastPasswordUpdate()) ||
+                Util.getNowToValidadePassword().equals(this.emailAccount.getLastPasswordUpdate())) {
             return true;
-        else
+        } else {
             return false;
+        }
     }
 
     public boolean userHasSpecial(String user) {

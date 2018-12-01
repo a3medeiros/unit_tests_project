@@ -19,10 +19,10 @@ public class EmailClientTest {
 
     private final String subject = "Hello World :D";
     private final String message = "Hello World 2 :D";
-    EmailAccount emailAccount = new EmailAccount(null,null,null,null);
-    EmailAccountBuilder emailAcc = new EmailAccountBuilder(emailAccount);
-    EmailClient client = new EmailClient(new ArrayList<>());
-    Email email;
+    private EmailAccount emailAccount = new EmailAccount(null,null,null,null);
+    private EmailAccountBuilder emailAcc = new EmailAccountBuilder(emailAccount);
+    private EmailClient client = new EmailClient(new ArrayList<>());
+    private Email email;
 
     @BeforeEach
     public void setUp() {
@@ -52,7 +52,7 @@ public class EmailClientTest {
         try{
             this.client.sendEmail(this.email, emailAccount);
         } catch (RuntimeException e) {
-           Assertions.assertTrue(false);
+           Assertions.fail();
         }
     }
 
@@ -89,30 +89,24 @@ public class EmailClientTest {
         try{
             this.client.createAccount(emailAcc);
         } catch (NullPointerException e) {
-            Assertions.assertTrue(false);
+            Assertions.fail();
         }
     }
 
     @Test
     public void createAccInvalidDomainTest_False() {
-        try{
+        Assertions.assertThrows(UnsupportedOperationException.class, () -> {
             this.emailAccount.setDomain("!br.com");
             this.client.createAccount(emailAcc);
-            Assertions.assertTrue(false);
-        } catch (UnsupportedOperationException e) {
-            Assertions.assertTrue(true);
-        }
+        });
     }
 
     @Test
     public void createAccNullListTest_True() {
-        try{
+        Assertions.assertThrows(UnsupportedOperationException.class, () -> {
             this.client.setAccounts(null);
             this.client.createAccount(emailAcc);
-            Assertions.assertTrue(false);
-        } catch (UnsupportedOperationException e) {
-            Assertions.assertTrue(true);
-        }
+        });
     }
 
     @Test
@@ -157,6 +151,28 @@ public class EmailClientTest {
         } catch (UnsupportedOperationException e) {
             Assertions.assertTrue(false);
         }
+    }
+
+    @Test
+    public void isValidPasswordTest_True() {
+        Assertions.assertTrue(this.client.isValidPassword(this.emailAccount));
+    }
+
+    @Test
+    public void isValidPasswordTest_False() {
+        this.emailAccount.setPassword("123");
+        Assertions.assertFalse(this.client.isValidPassword(this.emailAccount));
+    }
+
+    @Test
+    public void isValidEmailTest_True() {
+        Assertions.assertTrue(this.client.isValidEmail(this.email));
+    }
+
+    @Test
+    public void isValidEmailTest_False() {
+        this.email.setFrom("123");
+        Assertions.assertFalse(this.client.isValidEmail(this.email));
     }
 
 }

@@ -7,7 +7,6 @@ import java.util.Collection;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-
 public class EmailAccount {
     private String user;
     private String domain;
